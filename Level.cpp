@@ -1,13 +1,15 @@
 // Project Includes
 #include "Level.h"
-
+#include "Framework/AssetManager.h"
 
 // Library Includes
 #include <iostream>
 #include <fstream>
 
 Level::Level()
-	: m_currentLevel(0)
+	: m_cellsize(64.0f)
+	, m_currentLevel(0)
+	, m_background()
 
 {
 	LoadLevel(1);
@@ -23,7 +25,13 @@ void Level::Draw(sf::RenderTarget& _target)
 	// Draw game world to the window
 	_target.setView(camera);
 
-	//TODO
+	for (int y = 0; y < m_background.size(); ++y)
+	{
+		for (int x = 0; x < m_background[y].size(); ++x)
+		{
+			_target.draw(m_background[y][x]);
+		}
+	}
 
 	// Reset view
 	_target.setView(_target.getDefaultView());
@@ -46,7 +54,7 @@ void Level::LoadLevel(int _levelToLoad)
 	//TODO
 
 	// Clear out our lists
-	// TODO
+	m_background.clear();
 
 
 
@@ -68,12 +76,12 @@ void Level::LoadLevel(int _levelToLoad)
 	}
 
 	// Set the starting x and y coordinates used to position level objects
-	float x = 0.0f;
-	float y = 0.0f;
+	int x = 0.0f;
+	int y = 0.0f;
 
-	// Define the spacing we will use for our grid
-	const float X_SPACE = 100.0f;
-	const float Y_SPACE = 100.0f;
+	// Create the first row in our grid 
+	m_background.push_back(std::vector<sf::Sprite>());
+
 
 	// Create the player first as other objects will need to reference it
 	
@@ -90,22 +98,34 @@ void Level::LoadLevel(int _levelToLoad)
 
 		if (ch == ' ')
 		{
-			x += X_SPACE;
+			++x;
 		}
 		else if (ch == '\n')
 		{
-			y += Y_SPACE;
+			++y;
 			x = 0;
-		}
-		
-		else if (ch == '-')
-		{
-			// Do nothing - empty space
+
+			// Create a new row in our grid 
+			m_background.push_back(std::vector<sf::Sprite>());
 		}
 		else
 		{
-			std::cerr << "Unrecognised character in level file: " << ch;
+			// This is going to be some space (or empty space), so we need a background 
+			// Create Background sprite
+			m_background[y].push_back(sf::Sprite(AssetManager::GetTexture("graphics/ground.png")));
+			m_background[y][x].setPosition(x*m_cellsize, y*m_cellsize);
+
+
+			if (ch == '-')
+			{
+				// Do nothing - empty space
+			}
+			else
+			{
+				std::cerr << "Unrecognised character in level file: " << ch;
+			}
 		}
+		
 	}
 
 	// Close the file now that we are done with it
