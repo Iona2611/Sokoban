@@ -8,4 +8,11 @@ public:
 
 	Player();
 
+	// Overriding Methods
+	virtual void Input(sf::Event _gameEvent);
+
+private:
+
+	bool AttemptMove(sf::Vector2i _direction);
+
 };
