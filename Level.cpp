@@ -2,6 +2,8 @@
 #include "Level.h"
 #include "Framework/AssetManager.h"
 #include "Wall.h"
+#include "Storage.h"
+#include "Player.h"
 
 // Library Includes
 #include <iostream>
@@ -41,7 +43,7 @@ void Level::Draw(sf::RenderTarget& _target)
 	for (int y = 0; y < m_contents.size(); ++y)
 	{
 		// cells
-		for (int x = 0; x < m_contents.size(); ++x)
+		for (int x = 0; x < m_contents[y].size(); ++x)
 		{
 			// sticky outies (grid Objett)
 			for (int z = 0; z < m_contents[y][x].size(); ++z)
@@ -165,6 +167,21 @@ void Level::LoadLevel(int _levelToLoad)
 				wall->SetGridPosition(x, y);
 				m_contents[y][x].push_back(wall);
 			}
+			else if (ch == 'S')
+			{
+				Storage* storage = new Storage();
+				storage->SetLevel(this);
+				storage->SetGridPosition(x, y);
+				m_contents[y][x].push_back(storage);
+			}
+			else if (ch == 'P')
+			{
+				Player* player = new Player();
+				player->SetLevel(this);
+				player->SetGridPosition(x, y);
+				m_contents[y][x].push_back(player);
+			}
+
 			else
 			{
 				std::cerr << "Unrecognised character in level file: " << ch;

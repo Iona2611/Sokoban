@@ -1,6 +1,6 @@
-W W W W W W W W W W W W W
-W - - - - - C - - - - - W
-W - E - - C H C - - K - W
+W W W W W W W W W W W W W 
+W - - - - - C - - S - - W
+W - E - - C H C P - K - W
 W - - - - - C - - - - - W
 W - - - - C - - - - - - W
 W H - - H - - - - - - - W
