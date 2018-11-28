@@ -5,6 +5,6 @@
 Player::Player()
 	:GridObject()
 {
-	m_sprite.setTexture(AssetManager::GetTexture("graphics/playerStandDown.png"));
+	m_sprite.setTexture(AssetManager::GetTexture("graphics/player/playerStandDown.png"));
 
 }
